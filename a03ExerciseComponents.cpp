@@ -15,6 +15,8 @@
 #include <iostream>
 #include <string>
 #include <list>
+#include <cstdlib>
+#include <climits>
 #include "myFunctions.hpp"
 #include "menu.hpp"
 #include "ExerciseComponentStrings.hpp"
