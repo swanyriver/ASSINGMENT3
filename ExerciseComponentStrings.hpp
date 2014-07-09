@@ -1,9 +1,13 @@
-/*
- * ExerciseComponentStrings.hpp
- *
- *  Created on: Jul 8, 2014
- *      Author: Brandon
- */
+/***********************************************************
+* Author: Brandon Swanson
+* Date Created: 07-08-2014
+* Last Modification Date: 07-09-2014
+* Filename:ExerciseComponentStrings.hpp
+*
+* Overview: holds strings for the exercise components menu
+*
+*
+***********************************************************/
 
 #ifndef EXERCISECOMPONENTSTRINGS_HPP_
 #define EXERCISECOMPONENTSTRINGS_HPP_

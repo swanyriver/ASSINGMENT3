@@ -14,7 +14,7 @@
 
 #include <iostream>
 #include <string>
-#include <vector>
+#include <list>
 #include "myFunctions.hpp"
 #include "menu.hpp"
 #include "ExerciseComponentStrings.hpp"
@@ -23,7 +23,7 @@ using namespace std;
 
 void RandomByRefrence (); //problem 1
 void CompareStrings (); //problem 2
-void SortThreeNumbers(); //problem 3
+void SortThreeNumbers (); //problem 3
 
 int main ( int argc , char* argv[] ) {
    Menu myMenu( MENU_TITLE );
@@ -41,11 +41,59 @@ int main ( int argc , char* argv[] ) {
 //////problem 3/////////////////////////
 ////////////////////////////////////////
 
-void SortNumbers(int &numberA, int &numberB, int NumberC){
-   vector<>
+void SortNumbers ( int &numberA , int &numberB , int &numberC ) {
+
+   list<int> sortedNumbers;
+
+   //add first number indiscriminantly
+   sortedNumbers.push_back( numberA );
+
+   //add next number to back or front
+   if ( numberB < numberA )
+      sortedNumbers.push_front( numberB );
+   else
+      sortedNumbers.push_back( numberB );
+
+   //add next number to back, front or middle
+   if ( numberC < sortedNumbers.front() )
+      sortedNumbers.push_front( numberC );
+   else if ( numberC > sortedNumbers.back() )
+      sortedNumbers.push_back( numberC );
+   else { //put numberC in middle
+      int temp = sortedNumbers.back();
+      sortedNumbers.pop_back();
+      sortedNumbers.push_back( numberC );
+      sortedNumbers.push_back( temp );
+   }
+
+   //assign values in order
+   numberA = sortedNumbers.front();
+   sortedNumbers.pop_front();
+   numberB = sortedNumbers.front();
+   sortedNumbers.pop_front();
+   numberC = sortedNumbers.front();
+   sortedNumbers.pop_front();
 }
 
-void SortThreeNumbers(){
+void SortThreeNumbers () {
+   const int AMOUNT_OF_NUMBERS = 3;
+   int numbers[3];
+   string numericalPrompts[] = { "first", "second", "third" };
+
+   //get the three numbers
+   for ( int index = 0 ; index < AMOUNT_OF_NUMBERS ; index++ ) {
+      numbers[index]=swansonInput::GetInt(
+            "what is the " + numericalPrompts[index] + " number:" );
+   }
+
+   //sort them
+   SortNumbers(numbers[0],numbers[1],numbers[2]);
+
+   //output sorted numbers
+   cout << "the numbers in order are:";
+   for ( int index = 0 ; index < AMOUNT_OF_NUMBERS ; index++ ) {
+      cout << " " << numbers[index];
+   }
 
 }
 
