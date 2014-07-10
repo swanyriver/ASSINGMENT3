@@ -78,13 +78,8 @@ void ShowInterest () {
 
    cout << "the recursively calculated amount is:" << recursiveBalance << endl;
 
-   if ( recursiveBalance == formulaBalance ) {
-      cout << "this matches the amount calculated by a traditional formula:"
-            << formulaBalance;
-   } else {
-      cout << "this does not match the amount calculated by"
-            << " a traditional formula:" << formulaBalance;
-   }
+   cout << "the value calculated by a traditional formula is:"
+         << formulaBalance;
 
 }
 
