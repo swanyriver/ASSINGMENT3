@@ -17,6 +17,7 @@
 #include <list>
 #include <cstdlib>
 #include <cmath>
+#include <cstdio>
 #include "myFunctions.hpp"
 #include "menu.hpp"
 #include "ExerciseComponentStrings.hpp"
@@ -76,14 +77,16 @@ void ShowInterest () {
 
    formulaBalance = principal * pow( (1 + interestRate) , years );
 
-   cout << "the recursively calculated amount is:" << recursiveBalance << endl;
+   //cout << "the recursively calculated amount is:";
+   //<< recursiveBalance << endl;
+   printf("the recursively calculated amount is:$%.2f\n", recursiveBalance);
 
    if(swansonUtil::IsEqual(recursiveBalance,formulaBalance)){
-      cout << "this is the same as the formula calculation balance of:"
-            << formulaBalance;
+      cout << "this is the same as the formula calculation balance of:";
+      printf("$%.2f", formulaBalance);
    }else{
-      cout << "this is different from the formula calculation balance of:"
-            << formulaBalance;
+      cout << "this is different from the formula calculation balance of:";
+      printf("$%.2f", formulaBalance);
    }
 
 }
