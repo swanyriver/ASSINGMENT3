@@ -72,7 +72,7 @@ void ShowInterest () {
    int years = swansonInput::GetInt(
          "How many years will it collect interest:" , 1 );
 
-   recursiveBalance = GetInterst( principal , interestRate , years ) + 1;
+   recursiveBalance = GetInterst( principal , interestRate , years );
 
    formulaBalance = principal * pow( (1 + interestRate) , years );
 
