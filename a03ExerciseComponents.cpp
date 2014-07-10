@@ -72,14 +72,19 @@ void ShowInterest () {
    int years = swansonInput::GetInt(
          "How many years will it collect interest:" , 1 );
 
-   recursiveBalance = GetInterst( principal , interestRate , years );
+   recursiveBalance = GetInterst( principal , interestRate , years ) + 1;
 
    formulaBalance = principal * pow( (1 + interestRate) , years );
 
    cout << "the recursively calculated amount is:" << recursiveBalance << endl;
 
-   cout << "the value calculated by a traditional formula is:"
-         << formulaBalance;
+   if(swansonUtil::IsEqual(recursiveBalance,formulaBalance)){
+      cout << "this is the same as the formula calculation balance of:"
+            << formulaBalance;
+   }else{
+      cout << "this is different from the formula calculation balance of:"
+            << formulaBalance;
+   }
 
 }
 

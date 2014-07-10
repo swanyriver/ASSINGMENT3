@@ -10,6 +10,7 @@
 #include "myFunctions.hpp"
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
 
 /******************************************************************************
  *    purpose: determins if the array values of size range contains the item var
@@ -169,5 +170,16 @@ void swansonUtil::GetMappedRandomInts ( int valuesOut[] , int rangeBegining ,
       swansonUtil::InsertElement( nextSelection , valuesOut , i );
    }
 
+}
+
+//added week 3
+//todo comment
+bool swansonUtil::IsEqual(float value1, float value2){
+   return IsEqual(static_cast<double> (value1), static_cast<double> (value2));
+}
+bool swansonUtil::IsEqual(double value1, double value2){
+   static const float EPSILON = .00001;
+   if(abs(value1-value2) < EPSILON) return true;
+   else return false;
 }
 

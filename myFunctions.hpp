@@ -242,6 +242,10 @@ public:
    static void InsertElement ( int val , int sortArray[] , int numHolding );
    static void GetMappedRandomInts ( int valuesOut[] , int rangeBegining ,
          int rangeEnd , const int numGenerateValues );
+   //added week 3
+   //todo comment
+   static bool IsEqual(float value1, float value2);
+   static bool IsEqual(double value1, double value2);
 };
 
 #endif /* MYFUNCTIONS_H_ */
