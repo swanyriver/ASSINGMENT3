@@ -16,8 +16,7 @@
 #include <string>
 #include <list>
 #include <cstdlib>
-#include <climits>
-#include <ctime>
+#include <cmath>
 #include "myFunctions.hpp"
 #include "menu.hpp"
 #include "ExerciseComponentStrings.hpp"
@@ -27,55 +26,101 @@ using namespace std;
 void RandomByRefrence (); //problem 1
 void CompareStrings (); //problem 2
 void SortThreeNumbers (); //problem 3
-void ShowFib(); //problem 4
+void ShowFib (); //problem 4
+void BowlingPins (); //problem 5
+void ShowInterest (); //problem 6
 
 int main ( int argc , char* argv[] ) {
+
+   swansonUtil::SeedRandom();
+
    Menu myMenu( MENU_TITLE );
    myMenu.addItem( RandomByRefrence , RNDM_TITLE , RNDM_INTRO , RNDM_RPT );
    myMenu.addItem( CompareStrings , STR_TITLE , STR_INTRO , STR_RPT );
    myMenu.addItem( SortThreeNumbers , SRT_TITLE , SRT_INTRO , SRT_RPT );
    myMenu.addItem( ShowFib , FIB_TITLE , FIB_INTRO , FIB_RPT );
+   myMenu.addItem( BowlingPins , PIN_TITLE , PIN_INTRO , PIN_RPT );
+   myMenu.addItem( ShowInterest , INT_TITLE , INT_INTRO , INT_RPT );
 
    myMenu.runFromCommandLine( argc , argv );
+
+   cout << MAIN_INTRO;
 
    myMenu.showMenu();
 
    return 0;
 }
+
 ////////////////////////////////////////
-//////problem 4/////////////////////////
+//////problem 6/////////////////////////
 ////////////////////////////////////////
-unsigned long int GetFibonacci(int n){
-   if(n==0 || n==1) return 1;
-   else{
-      return GetFibonacci(n-1) + GetFibonacci(n-2);
+
+float GetInterst ( float principal , float interest , int years ) {
+   if ( years > 0 ) {
+      return GetInterst( principal , interest , --years ) * (1 + interest);
+   } else {
+      return principal;
    }
 }
 
-void ShowFib(){
+void ShowInterest () {
+   float recursiveBalance, formulaBalance;
+   float principal = swansonInput::GetFloat( "What is the initial amount:" ,
+         1 );
+   float interestRate = swansonInput::GetFloat(
+         "What is the interest rate (as a percentage):" , 0 ) / 100;
+   int years = swansonInput::GetInt(
+         "How many years will it collect interest:" , 1 );
 
-   clock_t clicks, previousClicks;
+   recursiveBalance = GetInterst( principal , interestRate , years );
 
-   clicks = clock();
-   cout << "place " << 0 << ":" << GetFibonacci(0);
-   clicks = clock() - clicks;
-   cout << "this took " << clicks << " milliseconds" << endl;
-   previousClicks = clicks;
+   formulaBalance = principal * pow( (1 + interestRate) , years );
 
-   for(int i=1; i<101; i++){
-      clicks = clock();
-      cout << "place " << i << ":" << GetFibonacci(i);
-      clicks = clock() - clicks;
-      cout << " this took " << clicks << " clicks (" <<
-            ((float)clicks)/CLOCKS_PER_SEC << " seconds),"
-            << double(clicks)/double(previousClicks)
-            << " times longer than place " << i-1 << endl;
-      previousClicks=clicks;
+   cout << "the recursively calculated amount is:" << recursiveBalance << endl;
 
+   if ( recursiveBalance == formulaBalance ) {
+      cout << "this matches the amount calculated by a traditional formula:"
+            << formulaBalance;
+   } else {
+      cout << "this does not match the amount calculated by"
+            << " a traditional formula:" << formulaBalance;
    }
 
-   int place = swansonInput::GetInt("What number in the sequence do you want to know:",0,100);
-   cout << "That number is:" << GetFibonacci(place);
+}
+
+////////////////////////////////////////
+//////problem 5/////////////////////////
+////////////////////////////////////////
+int HowManyBowlingPins ( int row ) {
+   if ( row == 1 )
+      return 1;
+   else {
+      return row + HowManyBowlingPins( row - 1 );
+   }
+}
+
+void BowlingPins () {
+   int numRows = swansonInput::GetInt( "how many rows of bowling pins:" , 1 );
+   int numPins = HowManyBowlingPins( numRows );
+   cout << "there would be " << numPins << ((numPins > 1) ? " pins" : "pin");
+}
+
+////////////////////////////////////////
+//////problem 4/////////////////////////
+////////////////////////////////////////
+unsigned long int GetFibonacci ( int n ) {
+   if ( n == 0 || n == 1 )
+      return 1;
+   else {
+      return GetFibonacci( n - 1 ) + GetFibonacci( n - 2 );
+   }
+}
+
+void ShowFib () {
+
+   int place = swansonInput::GetInt(
+         "What number in the sequence do you want to know:" , 0 , 40 );
+   cout << "That number is:" << GetFibonacci( place );
 
 }
 
@@ -124,12 +169,12 @@ void SortThreeNumbers () {
 
    //get the three numbers
    for ( int index = 0 ; index < AMOUNT_OF_NUMBERS ; index++ ) {
-      numbers[index]=swansonInput::GetInt(
+      numbers[index] = swansonInput::GetInt(
             "what is the " + numericalPrompts[index] + " number:" );
    }
 
    //sort them
-   SortNumbers(numbers[0],numbers[1],numbers[2]);
+   SortNumbers( numbers[0] , numbers[1] , numbers[2] );
 
    //output sorted numbers
    cout << "the numbers in order are:";

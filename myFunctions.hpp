@@ -3,6 +3,8 @@
 
 #include <list>
 #include <string>
+#include <climits>
+#include <cfloat>
 
 using namespace std;
 
@@ -147,7 +149,7 @@ public:
  *    exit: true if entered 'y' or 'yes' in upper or lower case
  *          flase if entered 'n' or 'no' in upper or lower case
  *
-******************************************************************************/
+ ******************************************************************************/
 
 class swansonInput {
 public:
@@ -155,20 +157,20 @@ public:
    static string GetOneWord ( string prompt );
 
    static int GetInt ( string prompt );
-   static int GetInt ( string prompt , int rangeMin , int rangeMax );
+   static int GetInt ( string prompt , int rangeMin , int rangeMax = INT_MAX );
    static long int GetLong ( string prompt );
    static long int GetLong ( string prompt , long int rangeMin ,
-         long int rangeMax );
+         long int rangeMax = LONG_MAX );
 
    static float GetFloat ( string prompt );
-   static float GetFloat ( string prompt , float rangeMin , float rangeMax );
+   static float GetFloat ( string prompt , float rangeMin ,
+         float rangeMax = FLT_MAX );
    static double GetDouble ( string prompt );
    static double GetDouble ( string prompt , double rangeMin ,
-         double rangeMax );
+         double rangeMax = DBL_MAX );
 
    static bool yesNo ( string prompt );
 };
-
 
 /******************************************************************************
  * SWANSON UTIL
@@ -223,7 +225,7 @@ public:
  *
  *    exit: a sorted array of non repeated random values
  *
-******************************************************************************/
+ ******************************************************************************/
 
 class swansonUtil {
 public:

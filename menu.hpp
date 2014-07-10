@@ -122,7 +122,7 @@ public:
                menuItems.size() + demoAllItem + exitMenuItem );
 
          //execute selection
-         if ( selection == demoItemNumber ) {
+         if ( selection == demoItemNumber ) { //demo all
             for ( int i = 0 ; i < menuItems.size() ; i++ )
                menuItems.at( i ).ItemSelected();
          } else if ( selection == exitItemNumber ) {
@@ -137,21 +137,23 @@ public:
    //used for passing in the number you wish selected
    void runFromCommandLine ( int argc , char* argv[] ) {
 
-        for ( int i = 1 ; i < argc ; i++ ) {
+      for ( int i = 1 ; i < argc ; i++ ) {
 
-           if ( swansonString::AllNumbers( argv[i] ) ) {
+         if ( swansonString::AllNumbers( argv[i] ) ) {
 
-              int selectionNumber = strtol( argv[i] , NULL , 0 );
+            int selectionNumber = strtol( argv[i] , NULL , 0 );
 
-              if ( selectionNumber > 0
-                    && selectionNumber
-                          <= (menuItems.size() + demoAllItem + exitMenuItem) ){
-                 menuItems.at( selectionNumber-1 ).ItemSelected();
-              }
+            if ( selectionNumber == 0 ) { //demo all
+               for ( int i = 0 ; i < menuItems.size() ; i++ )
+                  menuItems.at( i ).ItemSelected();
+            } else if ( selectionNumber > 0
+                  && selectionNumber <= menuItems.size() ) {
+               menuItems.at( selectionNumber - 1 ).ItemSelected();
+            }
 
-           }
-        }
-     }
+         }
+      }
+   }
 
 };
 
