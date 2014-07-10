@@ -29,6 +29,10 @@ using std::string;
 #define SRT_INTRO "This piece of code will sort three numbers that are passed by reference"
 #define SRT_RPT "Sort more numbers"
 
+#define FIB_TITLE "Fibonacci Sequence"
+#define FIB_INTRO "This piece of code will calculate the nth number of the Fibonacci Sequence"
+#define FIB_RPT "Find more Fibonacci numbers"
+
 #define _TITLE ""
 #define _INTRO ""
 #define _RPT ""

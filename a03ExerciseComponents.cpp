@@ -17,6 +17,7 @@
 #include <list>
 #include <cstdlib>
 #include <climits>
+#include <ctime>
 #include "myFunctions.hpp"
 #include "menu.hpp"
 #include "ExerciseComponentStrings.hpp"
@@ -26,12 +27,14 @@ using namespace std;
 void RandomByRefrence (); //problem 1
 void CompareStrings (); //problem 2
 void SortThreeNumbers (); //problem 3
+void ShowFib(); //problem 4
 
 int main ( int argc , char* argv[] ) {
    Menu myMenu( MENU_TITLE );
    myMenu.addItem( RandomByRefrence , RNDM_TITLE , RNDM_INTRO , RNDM_RPT );
    myMenu.addItem( CompareStrings , STR_TITLE , STR_INTRO , STR_RPT );
    myMenu.addItem( SortThreeNumbers , SRT_TITLE , SRT_INTRO , SRT_RPT );
+   myMenu.addItem( ShowFib , FIB_TITLE , FIB_INTRO , FIB_RPT );
 
    myMenu.runFromCommandLine( argc , argv );
 
@@ -39,6 +42,43 @@ int main ( int argc , char* argv[] ) {
 
    return 0;
 }
+////////////////////////////////////////
+//////problem 4/////////////////////////
+////////////////////////////////////////
+unsigned long int GetFibonacci(int n){
+   if(n==0 || n==1) return 1;
+   else{
+      return GetFibonacci(n-1) + GetFibonacci(n-2);
+   }
+}
+
+void ShowFib(){
+
+   clock_t clicks, previousClicks;
+
+   clicks = clock();
+   cout << "place " << 0 << ":" << GetFibonacci(0);
+   clicks = clock() - clicks;
+   cout << "this took " << clicks << " milliseconds" << endl;
+   previousClicks = clicks;
+
+   for(int i=1; i<101; i++){
+      clicks = clock();
+      cout << "place " << i << ":" << GetFibonacci(i);
+      clicks = clock() - clicks;
+      cout << " this took " << clicks << " clicks (" <<
+            ((float)clicks)/CLOCKS_PER_SEC << " seconds),"
+            << double(clicks)/double(previousClicks)
+            << " times longer than place " << i-1 << endl;
+      previousClicks=clicks;
+
+   }
+
+   int place = swansonInput::GetInt("What number in the sequence do you want to know:",0,100);
+   cout << "That number is:" << GetFibonacci(place);
+
+}
+
 ////////////////////////////////////////
 //////problem 3/////////////////////////
 ////////////////////////////////////////
