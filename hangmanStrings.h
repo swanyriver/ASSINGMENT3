@@ -8,23 +8,17 @@ using std::string;
 #define PLAY_AGAIN_STR 	"would you like to play again"
 #define ENTER_WORD_STR 	"Tell me what the secret word will be:"
 #define MAX_GUESSES_STR 	"How many guesses do you want the other player to have:"
-//#define GUESS_INSTR_STR "\nEnter a letter to guess at the letters contained in the secret word \nOr enter a word if you think you know the answer"
-//#define NUM_GUESSES "guesses remaining:"
-//#define NUM_GUESSES_SINGULAR "guess remaining:"
 #define GUESS_PROMPT "Enter Your Guess:"
 #define ENTERED_BEFORE "You have entered this guess already"
 #define NO_STR "something went wrong"
 #define LONG_STR "Please keep it to one letter at a time"
 #define NOT_ALPHA "That was not a letter"
-//#define GUESS_CHECK "Do you want to guess that the word is: "
 #define STILL_WRONG "No thats not it, keep trying"
-#define STRING_HINT "Here is what we have discovered about the word so far:"
+#define GOOD_JOB "Good Job that letter was in the Secret Word"
 #define TOO_LONG "The secret word cannot be that long"
-#define YOU_WIN "\nCONGRADULATIONS YOU WIN!!!!"
-#define YOU_LOSE "\nYou ran out of guesses without guessing the Secret Word\nBetter luck next time"
-//#define MISSING "\nYou were missing "
-//#define LETTER "this letter: "
-//#define LETTER_PLURAL "these letters: "
+#define YOU_WIN "CONGRADULATIONS YOU WIN!!!!"
+#define YOU_LOSE "You ran out of guesses without guessing the Secret Word"
+
 #define WORD_REVEAL "\nFrom the Secret Word: "
 
 //special display
@@ -34,6 +28,9 @@ using std::string;
 #define GUESS_MADE_LABEL "*   GUESSES MADE    * "
 #define LETTERS_LABEL "* LETTERS AVAILABLE * "
 #define GUESS_REMAINING_LABEL "* GUESSES REMAINING * "
+
+#define LETTERS_UNREAVEALED_LABEL "*  LETTERS MISSING  * "
+#define REVEAL_WORD_LABEL "*  SECRET WORD WAS  * "
 
 #endif /* HANGMANSTRINGS_H_ */
 
@@ -53,4 +50,20 @@ using std::string;
 ***************************************************************************
 ***************************************************************************
 What is your guess:
+
+
+***************************************************************************
+***************************************************************************
+*    SECRET WORD    * B - A N - O N S - A N S O N                         *
+***************************************************************************
+*  LETTERS MISSING  *   R     D       W                                   *
+***************************************************************************
+*   GUESSES MADE    * A B                       N O       S               *
+***************************************************************************
+*  SECRET WORD WAS  * BRANDONSWANSON                                      *
+***************************************************************************
+****         msg here                           ***************************
+***************************************************************************
+***************************************************************************
+
  */

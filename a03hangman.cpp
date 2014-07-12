@@ -24,6 +24,7 @@ struct Guess {
    bool succesful;
    string errorMsg;
    char guessLetter;
+   bool correct;
 };
 
 //reset variables for each game
@@ -36,10 +37,11 @@ string PlayerOnePickWord ();
 Guess PlayerTwoGuess ();
 
 //analyze guess made
-void ProcessGuess ( char guessLetter );
+void ProcessGuess ( Guess &nextGuess );
 
 //output correct letters to player
-void Display ( string message );
+void Display ();
+void Display ( string message , bool gameLost = false );
 
 //check if word has been guessed
 bool PlayerHasWon ();
@@ -69,11 +71,11 @@ int main () {
    char guessLetter;
 
    do { //restart game
+      ClearScreen();
       InitializeVars();
+      message = "";
 
       do { // make guesses
-
-         message = "";
 
          do {
             Display( message );
@@ -83,21 +85,23 @@ int main () {
          } while ( !nextGuess.succesful );
          guessLetter = nextGuess.guessLetter;
 
-         ProcessGuess( guessLetter );
+         ProcessGuess( nextGuess );
 
          if ( !PlayerHasWon() ) {
-            Display( "not yet won" );
+            if ( nextGuess.correct )
+               message = GOOD_JOB;
+            else
+               message = STILL_WRONG;
+            //Display(message);
          }
 
       } while ( numGuessesMade < maxGuesses && !PlayerHasWon() );
 
-      if ( PlayerHasWon() ) {
-         cout << YOU_WIN;
+      if ( PlayerHasWon() ) { //todo move this output to display
+         Display( YOU_WIN );
       } else {
 
-         cout << WORD_REVEAL << SecretWord;
-
-         cout << YOU_LOSE;
+         Display( YOU_LOSE , true );
       }
 
    } while ( swansonInput::yesNo( PLAY_AGAIN_STR ) );
@@ -126,7 +130,11 @@ void InitializeVars () {
 
    numGuessesMade = 0;
 
-   //todo fill arrays with false
+   //fill arrays with false  for repeat games
+   for ( int index = 0 ; index < LENGTH_OF_ALPHABET ; ++index ) {
+      LettersInSecretWord[index] = false;
+      GuessesMade[index] = false;
+   }
 
    for ( int i = 0 ; i < SecretWord.size() ; i++ ) { //set lettersInSecretWord[]
       LettersInSecretWord[at( SecretWord.at( i ) )] = true;
@@ -236,12 +244,14 @@ Guess PlayerTwoGuess () {
  * Purpose: determine successful guesses
  *
  * ***************************************************************/
-void ProcessGuess ( char guessLetter ) {
+void ProcessGuess ( Guess &nextGuess ) {
 
-   GuessesMade[at( guessLetter )] = true;
-   if ( !LettersInSecretWord[at( guessLetter )] ) {
+   GuessesMade[at( nextGuess.guessLetter )] = true;
+   if ( !LettersInSecretWord[at( nextGuess.guessLetter )] ) {
       numGuessesMade++;
-   }
+      nextGuess.correct = false;
+   } else
+      nextGuess.correct = true;
 
 }
 
@@ -276,12 +286,15 @@ bool PlayerHasWon () {
  * Purpose: inform player 2 of his status in the game
  *
  * ***************************************************************/
-void Display ( string message ) {
-
+void Display () {
+   Display( "" );
+}
+void Display ( string message , bool gameLost ) {
 
    const int WIDTH_DISPLAY = 75;
 
    string secretWordLine, lettersLine, guessesLine, guessRemainingLine;
+   string lettersRemainingLine, wordRevealLine;
    string messageLine;
 
    //build secret word string
@@ -289,25 +302,24 @@ void Display ( string message ) {
    for ( int index = 0 ; index < SecretWord.length() ; index++ ) {
       char letter = SecretWord.at( index );
       if ( GuessesMade[at( letter )] ) {
-         secretWordLine.push_back(letter);
+         secretWordLine.push_back( letter );
          secretWordLine += " ";
       } else
          secretWordLine += "- ";
    }
-   secretWordLine.append(WIDTH_DISPLAY - secretWordLine.length() - 1, ' ');
+   secretWordLine.append( WIDTH_DISPLAY - secretWordLine.length() - 1 , ' ' );
    secretWordLine += "*";
-
 
    //build letters available & guesses made string
    lettersLine = LETTERS_LABEL;
    guessesLine = GUESS_MADE_LABEL;
-   for ( char currentChar = 'a' ; currentChar <= 'z' ; currentChar++ ){
-      if(GuessesMade[at(currentChar)]){
-         guessesLine.push_back(currentChar);
-         guessesLine+= " ";
+   for ( char currentChar = 'a' ; currentChar <= 'z' ; currentChar++ ) {
+      if ( GuessesMade[at( currentChar )] ) {
+         guessesLine.push_back( currentChar );
+         guessesLine += " ";
          lettersLine += "  ";
-      }else {
-         lettersLine.push_back(currentChar);
+      } else {
+         lettersLine.push_back( currentChar );
          lettersLine += " ";
          guessesLine += "  ";
       }
@@ -315,14 +327,53 @@ void Display ( string message ) {
    guessesLine += "*";
    lettersLine += "*";
 
-
    //build guesses remaining string
    guessRemainingLine = GUESS_REMAINING_LABEL;
    int guessesRemaining = maxGuesses - numGuessesMade;
-   for(int i=0;i<guessesRemaining;i++){
-      guessRemainingLine += " ?";
+   for ( int i = 0 ; i < guessesRemaining ; i++ ) {
+      guessRemainingLine += "? ";
+   }
+   guessRemainingLine.append
+   ( WIDTH_DISPLAY - guessRemainingLine.length() - 1 , ' ' );
+   guessRemainingLine += "*";
+
+   //build message line
+   messageLine = LINE_SEPERATE;
+   if ( !message.empty() ) {
+      message = "  " + message + "  ";
+      int pos = WIDTH_DISPLAY / 2.0 - message.length() / 2.0;
+      messageLine.replace( pos , message.size() , message );
    }
 
+   ///special end of game display
+   if ( gameLost ) {
+      //build letters remaining line
+      lettersRemainingLine = LETTERS_UNREAVEALED_LABEL;
+      for ( int index = 0 ; index < SecretWord.length() ; index++ ) {
+         char letter = SecretWord.at( index );
+         if ( !GuessesMade[at( letter )] ) {
+            lettersRemainingLine.push_back( letter );
+            lettersRemainingLine += " ";
+         } else
+            lettersRemainingLine += "- ";
+      }
+      lettersRemainingLine.append
+      ( WIDTH_DISPLAY - lettersRemainingLine.length() - 1 ,' ' );
+      lettersRemainingLine += "*";
+
+
+      //build secret word reveal line
+      wordRevealLine = REVEAL_WORD_LABEL;
+      wordRevealLine += SecretWord;
+      wordRevealLine.append
+      ( WIDTH_DISPLAY - wordRevealLine.length() - 1 ,' ' );
+      wordRevealLine += "*";
+
+      //swap lines for output
+      lettersLine = lettersRemainingLine;
+      guessRemainingLine = wordRevealLine;
+
+   }
 
    //output display
    ClearScreen();
@@ -334,8 +385,10 @@ void Display ( string message ) {
    cout << LINE_SEPERATE << endl;
    cout << guessesLine << endl;
    cout << LINE_SEPERATE << endl;
+   cout << guessRemainingLine << endl;
+   cout << LINE_SEPERATE << endl;
+   cout << messageLine << endl;
+   cout << LINE_SEPERATE << endl;
 
-
-   cout << message << endl;
 
 }
