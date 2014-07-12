@@ -1,2 +1,2 @@
-hellomake: swansonString.cpp swansonUtils.cpp swansonInput.cpp a03ExerciseComponents.cpp
-	g++ swansonString.cpp swansonUtils.cpp swansonInput.cpp a03ExerciseComponents.cpp -o exercise && ./exercise
+hellomake: swansonString.cpp swansonUtils.cpp swansonInput.cpp a03hangman.cpp
+	g++ swansonString.cpp swansonUtils.cpp swansonInput.cpp a03hangman.cpp -o hangman && ./hangman

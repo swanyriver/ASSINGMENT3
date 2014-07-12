@@ -225,6 +225,22 @@ public:
  *
  *    exit: a sorted array of non repeated random values
  *
+ * static bool IsEqual(float/double value1, float/double value2);
+ *    Entry:2 float/double values
+ *
+ *    Exit: true if two values are within defined epsilon of each other, false
+ *          otherwise
+ *
+ *    Purpose: to compare the "equality" of imperiously stored floating point
+ *             numbers
+ *
+ * static void ClearScreen();
+ *    Entry: running on unix based system
+ *
+ *    Exit: A cleared screen
+ *
+ *    Purpose: Clear screen for a refresh
+ *
  ******************************************************************************/
 
 class swansonUtil {
@@ -242,8 +258,7 @@ public:
    static void InsertElement ( int val , int sortArray[] , int numHolding );
    static void GetMappedRandomInts ( int valuesOut[] , int rangeBegining ,
          int rangeEnd , const int numGenerateValues );
-   //added week 3
-   //todo comment
+
    static bool IsEqual(float value1, float value2);
    static bool IsEqual(double value1, double value2);
 
