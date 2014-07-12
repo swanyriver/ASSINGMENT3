@@ -16,8 +16,15 @@
 #include "hangmanStrings.h"
 #include <iostream>
 #include <string>
+#include <cstdlib>
 
 using namespace std;
+
+struct Guess {
+   bool succesful;
+   string errorMsg;
+   char guessLetter;
+};
 
 //reset variables for each game
 void InitializeVars ();
@@ -26,18 +33,24 @@ void InitializeVars ();
 string PlayerOnePickWord ();
 
 //get a guess letter or word from player two
-char PlayerTwoGuess ();
+Guess PlayerTwoGuess ();
 
 //analyze guess made
 void ProcessGuess ( char guessLetter );
 
 //output correct letters to player
-void PrintResults ();
+void Display ( string message );
 
-bool PlayerHasWon();
+//check if word has been guessed
+bool PlayerHasWon ();
 
 //somewhat obscure secret word input
 void ClearScreen ();
+
+//map alpha character onto array from 0-25
+inline int at ( char inCh ) {
+   return inCh - 'a';
+}
 
 const int MAX_WORD_LENGTH = 12;
 const int LENGTH_OF_ALPHABET = 26;
@@ -45,60 +58,42 @@ const int CLEAR_SCREEN_CHAR_NUM = 6000 * 5;
 
 string SecretWord;
 int maxGuesses;
-
-/*
-char lettersRevealed[LENGTH_OF_ALPHABET];
-char lettersInSecretWord[LENGTH_OF_ALPHABET];
-string guessesMade[LENGTH_OF_ALPHABET];
-int numLettersRevealed;
+bool LettersInSecretWord[LENGTH_OF_ALPHABET];
+bool GuessesMade[LENGTH_OF_ALPHABET];
 int numGuessesMade;
-int numLettersInWord; //distinct letters
-*/
-//bool bLetersRevealed[LENGTH_OF_ALPHABET];
-bool bLettersInSecretWord[LENGTH_OF_ALPHABET];
-bool bGuessesMade[LENGTH_OF_ALPHABET];
-int numGuessesMade;
-
-inline int at(char inCh){ return inCh -'a'; }
 
 int main () {
+
+   string message;
+   Guess nextGuess;
+   char guessLetter;
 
    do { //restart game
       InitializeVars();
 
-      ClearScreen();
-
       do { // make guesses
-         char guessLetter = PlayerTwoGuess();
 
+         message = "";
+
+         do {
+            Display( message );
+            nextGuess = PlayerTwoGuess();
+            message = nextGuess.errorMsg;
+
+         } while ( !nextGuess.succesful );
+         guessLetter = nextGuess.guessLetter;
 
          ProcessGuess( guessLetter );
 
-         if ( !PlayerHasWon()) {
-            PrintResults();
+         if ( !PlayerHasWon() ) {
+            Display( "not yet won" );
          }
 
-         /////debug string////////
-         /*cout << numGuessesMade << " " << MAX_GUESSES
-          << "  " << numLettersRevealed << "/" << numLettersInWord
-          << " " << SecretWord << "  " << guessesMade[numGuessesMade-1]
-          << endl;*/
-         ///////debug string
-      } while ( numGuessesMade < maxGuesses && !PlayerHasWon());
+      } while ( numGuessesMade < maxGuesses && !PlayerHasWon() );
 
       if ( PlayerHasWon() ) {
          cout << YOU_WIN;
       } else {
-         //todo fix this
-         /*cout << MISSING <<
-         (((numLettersInWord - numLettersRevealed) > 1) ?
-         LETTER_PLURAL :
-                                                          LETTER);
-         for ( int i = 0 ; i < numLettersInWord ; i++ ) {
-            if ( !swansonUtil::Contains( lettersInSecretWord[i] ,
-                  lettersRevealed , numLettersRevealed ) )
-               cout << lettersInSecretWord[i] << " ";
-         }*/
 
          cout << WORD_REVEAL << SecretWord;
 
@@ -134,7 +129,7 @@ void InitializeVars () {
    //todo fill arrays with false
 
    for ( int i = 0 ; i < SecretWord.size() ; i++ ) { //set lettersInSecretWord[]
-      bLettersInSecretWord[at(SecretWord.at(i))] = true;
+      LettersInSecretWord[at( SecretWord.at( i ) )] = true;
    }
 
 }
@@ -192,37 +187,42 @@ void ClearScreen () {
  * Purpose: to get a guess from player 2
  *
  * ***************************************************************/
-char PlayerTwoGuess () {
+Guess PlayerTwoGuess () {
+
+   Guess playerTwoGuess;
+   playerTwoGuess.succesful = false;
+
    char guessLetter;
-   bool retry;
+   string guessInputString;
 
-   int guessesRemaining = maxGuesses - numGuessesMade;
+   guessInputString = swansonInput::GetString( GUESS_PROMPT );
 
-   //TODO move to display
-   cout << GUESS_INSTR_STR;
-   cout << endl << ((guessesRemaining > 1) ? NUM_GUESSES : NUM_GUESSES_SINGULAR)
-         << guessesRemaining;
+   //check that it is a string
+   if ( guessInputString.empty() ) {
+      playerTwoGuess.errorMsg = NO_STR;
+      return playerTwoGuess;
+   }
+   //check if more than one char
+   if ( guessInputString.length() > 1 ) {
+      playerTwoGuess.errorMsg = LONG_STR;
+      return playerTwoGuess;
+   }
+   guessLetter = guessInputString.at( 0 );
+   //check if a letter
+   if ( !swansonString::IsALetter( guessLetter ) ) {
+      playerTwoGuess.errorMsg = NOT_ALPHA;
+      return playerTwoGuess;
+   }
+   //check if a already been guessed
+   if ( GuessesMade[at( guessLetter )] ) {
+      playerTwoGuess.errorMsg = ENTERED_BEFORE;
+      return playerTwoGuess;
+   }
 
-   guessLetter = swansonInput::GetString(GUESS_PROMPT).at(0);
-
-   /*do {
-      retry = false;
-      do {
-         if ( retry )
-            cout << ENTERED_BEFORE;
-         //guessString = swansonInput::GetOneWord( GUESS_PROMPT );
-         guessCh = swansonString::LowerCase( string(guessCh) );
-         retry = true;
-      } while (bGuessesMade[at(guessCH)] );
-   } while ( guessString.size() > 1
-         && !swansonInput::yesNo( GUESS_CHECK + guessString + "\n" ) );*/
-
-
-   /*cout << "what is your guess:";
-   guessLetter = getchar();*/
-   //guessLetter = swansonString::LowerCase( guessLetter + "").at(0);
-
-   return guessLetter;
+   //else, no errors, return guess
+   playerTwoGuess.succesful = true;
+   playerTwoGuess.guessLetter = guessLetter;
+   return playerTwoGuess;
 
 }
 
@@ -238,12 +238,10 @@ char PlayerTwoGuess () {
  * ***************************************************************/
 void ProcessGuess ( char guessLetter ) {
 
-   bGuessesMade[at(guessLetter)] = true;
-   if ( !bLettersInSecretWord[at(guessLetter)] ) {
+   GuessesMade[at( guessLetter )] = true;
+   if ( !LettersInSecretWord[at( guessLetter )] ) {
       numGuessesMade++;
    }
-
-
 
 }
 
@@ -259,11 +257,12 @@ void ProcessGuess ( char guessLetter ) {
  *
  *
  * ***************************************************************/
-bool PlayerHasWon(){
+bool PlayerHasWon () {
    bool hasWon = true;
    for ( int i = 0 ; i < SecretWord.size() ; i++ ) {
-      char letter = SecretWord.at(i);
-      if (!bGuessesMade[at(letter)] ) hasWon = false;
+      char letter = SecretWord.at( i );
+      if ( !GuessesMade[at( letter )] )
+         hasWon = false;
    }
    return hasWon;
 }
@@ -277,14 +276,66 @@ bool PlayerHasWon(){
  * Purpose: inform player 2 of his status in the game
  *
  * ***************************************************************/
-void PrintResults () {
-   cout << endl << STILL_WRONG << endl << STRING_HINT << endl;
-   for ( int i = 0 ; i < SecretWord.size() ; i++ ) {
-      cout << " ";
-      char cursorChar = SecretWord.at( i );
-      if ( bGuessesMade[at(cursorChar)]) {
-         cout << cursorChar;
+void Display ( string message ) {
+
+
+   const int WIDTH_DISPLAY = 75;
+
+   string secretWordLine, lettersLine, guessesLine, guessRemainingLine;
+   string messageLine;
+
+   //build secret word string
+   secretWordLine = SECRET_WORD_LABEL;
+   for ( int index = 0 ; index < SecretWord.length() ; index++ ) {
+      char letter = SecretWord.at( index );
+      if ( GuessesMade[at( letter )] ) {
+         secretWordLine.push_back(letter);
+         secretWordLine += " ";
       } else
-         cout << "-";
+         secretWordLine += "- ";
    }
+   secretWordLine.append(WIDTH_DISPLAY - secretWordLine.length() - 1, ' ');
+   secretWordLine += "*";
+
+
+   //build letters available & guesses made string
+   lettersLine = LETTERS_LABEL;
+   guessesLine = GUESS_MADE_LABEL;
+   for ( char currentChar = 'a' ; currentChar <= 'z' ; currentChar++ ){
+      if(GuessesMade[at(currentChar)]){
+         guessesLine.push_back(currentChar);
+         guessesLine+= " ";
+         lettersLine += "  ";
+      }else {
+         lettersLine.push_back(currentChar);
+         lettersLine += " ";
+         guessesLine += "  ";
+      }
+   }
+   guessesLine += "*";
+   lettersLine += "*";
+
+
+   //build guesses remaining string
+   guessRemainingLine = GUESS_REMAINING_LABEL;
+   int guessesRemaining = maxGuesses - numGuessesMade;
+   for(int i=0;i<guessesRemaining;i++){
+      guessRemainingLine += " ?";
+   }
+
+
+   //output display
+   ClearScreen();
+   cout << LINE_SEPERATE << endl;
+   cout << LINE_SEPERATE << endl;
+   cout << secretWordLine << endl;
+   cout << LINE_SEPERATE << endl;
+   cout << lettersLine << endl;
+   cout << LINE_SEPERATE << endl;
+   cout << guessesLine << endl;
+   cout << LINE_SEPERATE << endl;
+
+
+   cout << message << endl;
+
 }
