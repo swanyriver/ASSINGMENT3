@@ -13,7 +13,7 @@ using std::string;
 #define NO_STR "something went wrong"
 #define LONG_STR "Please keep it to one letter at a time"
 #define NOT_ALPHA "That was not a letter"
-#define STILL_WRONG "No thats not it, keep trying"
+#define STILL_WRONG "That letter is not in the word, keep trying"
 #define GOOD_JOB "Good Job that letter was in the Secret Word"
 #define TOO_LONG "The secret word cannot be that long"
 #define YOU_WIN "CONGRADULATIONS YOU WIN!!!!"

@@ -1,14 +1,14 @@
 /***********************************************************
  * Author: Brandon Swanson
  * Date Created: 06-30-2014
- * Last Modification Date: 06-30-2014
+ * Last Modification Date: 07-11-2014
  * Filename: hangman.cpp
  *
- * Overview: A word guessing game
+ * Overview: A word guessing game version 2
  *
  * Input: A secret word, letter guesses
  *
- * Output: correctly guess letters
+ * Output: correctly guessed letters
  *
  ***********************************************************/
 
@@ -18,6 +18,7 @@
 #include <string>
 #include <cstdlib>
 #include <cstring>
+#include <sstream>
 
 using namespace std;
 
@@ -26,6 +27,7 @@ struct Guess {
    string errorMsg;
    char guessLetter;
    bool correct;
+   int occurences;
 };
 
 //reset variables for each game
@@ -74,13 +76,14 @@ int main (int argc , char* argv[]) {
    for(int i=0;i<argc;i++){
       if(strcmp(SIMPLE.c_str(),argv[i])==0) simple = true;
    }
-   if(simple) ClearScreen = HackClearScreen;
-   else ClearScreen=swansonUtil::ClearScreen;
-
+   if(simple) ClearScreen = HackClearScreen; //run simple
+   else ClearScreen=swansonUtil::ClearScreen; //call system clear
+   ///finished with command line arguments////////////////////////
 
    string message;
    Guess nextGuess;
 
+   //todo   make an intro
 
    do { //restart game
       ClearScreen();
@@ -100,8 +103,14 @@ int main (int argc , char* argv[]) {
          ProcessGuess( nextGuess );
 
          if ( !PlayerHasWon() ) {
-            if ( nextGuess.correct )
+            if ( nextGuess.correct ){
                message = GOOD_JOB;
+               if(nextGuess.occurences>1){ //display how many occurrences
+                  ostringstream numToString;
+                  numToString << nextGuess.occurences; //convert int to string
+                  message+= " " + numToString.str() + " times";
+               }
+            }
             else
                message = STILL_WRONG;
          }
@@ -258,12 +267,22 @@ Guess PlayerTwoGuess () {
  * ***************************************************************/
 void ProcessGuess ( Guess &nextGuess ) {
 
+   //add guess to guesses made
    GuessesMade[at( nextGuess.guessLetter )] = true;
+
+   //check if correct and count
    if ( !LettersInSecretWord[at( nextGuess.guessLetter )] ) {
       numGuessesMade++;
       nextGuess.correct = false;
-   } else
+   } else{
       nextGuess.correct = true;
+      nextGuess.occurences=0;
+      for (int pos = 0; pos < SecretWord.length(); pos++) {
+         if(SecretWord.at(pos) == nextGuess.guessLetter)
+            nextGuess.occurences++;
+      }
+   }
+
 
 }
 
@@ -326,6 +345,7 @@ void Display ( string message , bool gameLost ) {
    lettersLine = LETTERS_LABEL;
    guessesLine = GUESS_MADE_LABEL;
    for ( char currentChar = 'a' ; currentChar <= 'z' ; currentChar++ ) {
+      //for each letter place a letter or empty space, acording to guesses
       if ( GuessesMade[at( currentChar )] ) {
          guessesLine.push_back( currentChar );
          guessesLine += " ";
