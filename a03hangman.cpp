@@ -46,8 +46,10 @@ void Display ( string message , bool gameLost = false );
 //check if word has been guessed
 bool PlayerHasWon ();
 
+//refresh terminal screen
+void (*ClearScreen) ();
 //somewhat obscure secret word input
-void ClearScreen ();
+void HackClearScreen();
 
 //map alpha character onto array from 0-25
 inline int at ( char inCh ) {
@@ -56,7 +58,7 @@ inline int at ( char inCh ) {
 
 const int MAX_WORD_LENGTH = 12;
 const int LENGTH_OF_ALPHABET = 26;
-const int CLEAR_SCREEN_CHAR_NUM = 6000 * 5;
+const string SIMPLE = "-s";
 
 string SecretWord;
 int maxGuesses;
@@ -64,11 +66,20 @@ bool LettersInSecretWord[LENGTH_OF_ALPHABET];
 bool GuessesMade[LENGTH_OF_ALPHABET];
 int numGuessesMade;
 
-int main () {
+int main (int argc , char* argv[]) {
+
+   //check for simple mode
+   bool simple = false;
+   for(int i=0;i<argc;i++){
+      if(strcmp(SIMPLE.c_str(),argv[i])==0) simple = true;
+   }
+   if(simple) ClearScreen = HackClearScreen;
+   else ClearScreen=swansonUtil::ClearScreen;
+
 
    string message;
    Guess nextGuess;
-   char guessLetter;
+
 
    do { //restart game
       ClearScreen();
@@ -83,7 +94,7 @@ int main () {
             message = nextGuess.errorMsg;
 
          } while ( !nextGuess.succesful );
-         guessLetter = nextGuess.guessLetter;
+
 
          ProcessGuess( nextGuess );
 
@@ -92,12 +103,11 @@ int main () {
                message = GOOD_JOB;
             else
                message = STILL_WRONG;
-            //Display(message);
          }
 
       } while ( numGuessesMade < maxGuesses && !PlayerHasWon() );
 
-      if ( PlayerHasWon() ) { //todo move this output to display
+      if ( PlayerHasWon() ) {
          Display( YOU_WIN );
       } else {
 
@@ -174,17 +184,18 @@ string PlayerOnePickWord () {
  * Purpose: obscure the entered secret word
  *
  * ***************************************************************/
-void ClearScreen () {
-   /*char randChar;
+/*void ClearScreen () {
+   char randChar;
     for ( int i = 0 ; i < CLEAR_SCREEN_CHAR_NUM ; i++ ) {
     randChar = swansonUtil::GetRandomInRange( 'A' , 'Z' );
     cout << randChar;
     }
 
-    cout << endl << endl;*/
+    cout << endl << endl;
 
-   system( "clear && printf '\e[3J'" );
-}
+   //system( "clear && printf '\e[3J'" );
+
+}*/
 
 /**************************************************************
  *
@@ -391,4 +402,10 @@ void Display ( string message , bool gameLost ) {
    cout << LINE_SEPERATE << endl;
 
 
+}
+
+void HackClearScreen(){
+   string clearScrn ="";
+   clearScrn.append(100,'\n');
+   std::cout << clearScrn;
 }

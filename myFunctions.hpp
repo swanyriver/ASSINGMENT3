@@ -246,6 +246,9 @@ public:
    //todo comment
    static bool IsEqual(float value1, float value2);
    static bool IsEqual(double value1, double value2);
+
+   static void ClearScreen();
+
 };
 
 #endif /* MYFUNCTIONS_H_ */

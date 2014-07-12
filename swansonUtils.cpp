@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <cmath>
+#include <iostream>
 
 /******************************************************************************
  *    purpose: determins if the array values of size range contains the item var
@@ -181,5 +182,9 @@ bool swansonUtil::IsEqual(double value1, double value2){
    static const float EPSILON = .0005;
    if(abs(value1-value2) < EPSILON) return true;
    else return false;
+}
+
+void swansonUtil::ClearScreen(){
+   system( "clear && printf '\e[3J'" );
 }
 
