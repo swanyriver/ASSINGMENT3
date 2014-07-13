@@ -242,12 +242,15 @@ Guess PlayerTwoGuess () {
       playerTwoGuess.errorMsg = LONG_STR;
       return playerTwoGuess;
    }
-   guessLetter = guessInputString.at( 0 );
-   //check if a letter
-   if ( !swansonString::IsALetter( guessLetter ) ) {
+      //check if a letter
+   if ( !swansonString::IsALetter( guessInputString.at( 0 ) ) ) {
       playerTwoGuess.errorMsg = NOT_ALPHA;
       return playerTwoGuess;
    }
+   //it is a single letter, lower case it, store it in guessletter
+   guessInputString = swansonString::LowerCase(guessInputString);
+   guessLetter = guessInputString.at( 0 );
+
    //check if a already been guessed
    if ( GuessesMade[at( guessLetter )] ) {
       playerTwoGuess.errorMsg = ENTERED_BEFORE;
