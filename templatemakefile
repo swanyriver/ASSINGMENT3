@@ -1,0 +1,2 @@
+hellomake: swansonString.cpp swansonUtils.cpp swansonInput.cpp templateTest.cpp
+	g++ swansonString.cpp swansonUtils.cpp swansonInput.cpp templateTest.cpp -o template && ./template

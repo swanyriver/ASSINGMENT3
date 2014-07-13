@@ -163,11 +163,11 @@ public:
          long int rangeMax = LONG_MAX );
 
    static float GetFloat ( string prompt );
-   static float GetFloat ( string prompt , float rangeMin ,
-         float rangeMax = FLT_MAX );
+   static float GetFloat ( string prompt , float rangeMin , float rangeMax =
+   FLT_MAX );
    static double GetDouble ( string prompt );
-   static double GetDouble ( string prompt , double rangeMin ,
-         double rangeMax = DBL_MAX );
+   static double GetDouble ( string prompt , double rangeMin , double rangeMax =
+   DBL_MAX );
 
    static bool yesNo ( string prompt );
 };
@@ -245,24 +245,44 @@ public:
 
 class swansonUtil {
 public:
-   static bool Contains ( long int var , long int values[] , int range );
-   static bool Contains ( int var , int values[] , int range );
-   static bool Contains ( float var , float values[] , int range );
-   static bool Contains ( double var , double values[] , int range );
-   static bool Contains ( bool var , bool values[] , int range );
-   static bool Contains ( string var , string values[] , int range );
-   static bool Contains ( char var , char values[] , int range );
+
    static void SeedRandom ();
    static int GetRandomInRange ( int max );
    static int GetRandomInRange ( int min , int max );
-   static void InsertElement ( int val , int sortArray[] , int numHolding );
    static void GetMappedRandomInts ( int valuesOut[] , int rangeBegining ,
          int rangeEnd , const int numGenerateValues );
+   static bool IsEqual ( float value1 , float value2 );
+   static bool IsEqual ( double value1 , double value2 );
+   static void ClearScreen ();
 
-   static bool IsEqual(float value1, float value2);
-   static bool IsEqual(double value1, double value2);
+   //contains template method must be declared in class
+   template<typename Type>
+   static bool Contains ( Type var , Type values[] , int range ) {
+      for ( int i = 0 ; i < range ; i++ ) {
+         if ( values[i] == var )
+            return true;
+      }
+      return false;
+   }
+   static bool Contains ( float var , float values[] , int range );
+   static bool Contains ( double var , double values[] , int range );
 
-   static void ClearScreen();
+   //insert template method must be declared in class
+   //to-do, why not doubles and chars
+   template<typename TypeIns>
+   static void InsertElement ( TypeIns val , TypeIns sortArray[] ,
+         int numHolding ) {
+      int i = 0;
+      for ( ; i < numHolding ; i++ ) {
+         if ( val < sortArray[i] ) {
+            for ( int j = numHolding ; j > i ; j-- ) {
+               sortArray[j] = sortArray[j - 1];
+            }
+            break;
+         }
+      }
+      sortArray[i] = val;
+   }
 
 };
 

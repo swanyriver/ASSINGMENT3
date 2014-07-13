@@ -20,57 +20,20 @@
  *
  *    exit: true if the array values[] has at least one instance of var
 ******************************************************************************/
-bool swansonUtil::Contains ( long int var , long int values[] , int range ) {
-   for ( int i = 0 ; i < range ; i++ ) {
-      if ( values[i] == var )
-         return true;
-   }
-   return false;
-}
-bool swansonUtil::Contains ( int var , int values[] , int range ) {
-   for ( int i = 0 ; i < range ; i++ ) {
-      if ( values[i] == var )
-         return true;
-   }
-   return false;
-}
-bool swansonUtil::Contains ( double var , double values[] , int range ) {
-   for ( int i = 0 ; i < range ; i++ ) {
-      if ( IsEqual(values[i] , var) )
-         return true;
-   }
-   return false;
-}
-bool swansonUtil::Contains ( float var , float values[] , int range ) {
-   for ( int i = 0 ; i < range ; i++ ) {
-      if ( IsEqual(values[i] , var) )
-         return true;
-   }
-   return false;
-}
 
-bool swansonUtil::Contains ( bool var , bool values[] , int range ) {
+bool swansonUtil::Contains(float var, float values[], int range){
    for ( int i = 0 ; i < range ; i++ ) {
-      if ( values[i] == var )
+      if ( swansonUtil::IsEqual(values[i] , var) )
          return true;
    }
    return false;
 }
-
-bool swansonUtil::Contains ( string var , string values[] , int range ) {
-   for ( int i = 0 ; i < range ; i++ ) {
-      if ( values[i] == var )
-         return true;
-   }
-   return false;
-}
-
-bool swansonUtil::Contains ( char var , char values[] , int range ) {
-   for ( int i = 0 ; i < range ; i++ ) {
-      if ( values[i] == var )
-         return true;
-   }
-   return false;
+bool swansonUtil::Contains(double var, double values[],int range){
+      for ( int i = 0 ; i < range ; i++ ) {
+         if ( swansonUtil::IsEqual(values[i] , var) )
+            return true;
+      }
+      return false;
 }
 
 /******************************************************************************
@@ -80,7 +43,7 @@ bool swansonUtil::Contains ( char var , char values[] , int range ) {
  *
  *    exit: rand() is seeded with time()
 ******************************************************************************/
-void swansonUtil::SeedRandom () {
+void swansonUtil::SeedRandom (){
    srand( time( NULL ) );
 }
 
@@ -119,7 +82,7 @@ int swansonUtil::GetRandomInRange ( int min , int max ) {
  *
  *    exit: a sorted array with additional element val
 ******************************************************************************/
-void swansonUtil::InsertElement ( int val , int sortArray[] , int numHolding ) {
+/*void swansonUtil::InsertElement ( int val , int sortArray[] , int numHolding ) {
    int i = 0;
    for ( ; i < numHolding ; i++ ) {
       if ( val < sortArray[i] ) {
@@ -130,7 +93,7 @@ void swansonUtil::InsertElement ( int val , int sortArray[] , int numHolding ) {
       }
    }
    sortArray[i] = val;
-}
+}*/
 
 /******************************************************************************
  *    purpose: produce an amount (numGeneratedValues) of numbers across a given
