@@ -36,14 +36,14 @@ bool swansonUtil::Contains ( int var , int values[] , int range ) {
 }
 bool swansonUtil::Contains ( double var , double values[] , int range ) {
    for ( int i = 0 ; i < range ; i++ ) {
-      if ( values[i] == var )
+      if ( IsEqual(values[i] , var) )
          return true;
    }
    return false;
 }
 bool swansonUtil::Contains ( float var , float values[] , int range ) {
    for ( int i = 0 ; i < range ; i++ ) {
-      if ( values[i] == var )
+      if ( IsEqual(values[i] , var) )
          return true;
    }
    return false;
