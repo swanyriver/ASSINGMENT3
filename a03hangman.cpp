@@ -14,6 +14,7 @@
 
 #include "myFunctions.hpp"
 #include "hangmanStrings.h"
+#include "Dictionary.hpp"
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -35,6 +36,7 @@ void InitializeVars ();
 
 //get a word from player one
 string PlayerOnePickWord ();
+string PlayerOnePickWordFromDict ();
 
 //get a guess letter or word from player two
 Guess PlayerTwoGuess ();
@@ -82,10 +84,25 @@ int main (int argc , char* argv[]) {
    else ClearScreen=swansonUtil::ClearScreen; //call system clear
    ///finished with command line arguments////////////////////////
 
+   bool dictON = true;
+
+
+   Dictionary myDictonary;
+   if(!myDictonary.succesfull || myDictonary.NumWords()==0)
+      dictON=false;
+   myDictonary.TestDictionary();
+
+   Dictionary shortDict(6);
+   shortDict.TestDictionary();
+
+   Dictionary failDict(Dictionary::UNRESTRICTED,"hello.txt");
+   cout << "this one success:" << failDict.succesfull;
+   getchar();
+
    string message;
    Guess nextGuess;
 
-   //todo   make an intro
+
    ClearScreen();
    cout << Banner();
    cout << endl << INTRO << endl;
@@ -191,26 +208,14 @@ string PlayerOnePickWord () {
    return secretString;
 }
 
-/**************************************************************
- *
- * Entry: none
- *
- * Exit: a series of random letters sent to output stream
- *
- * Purpose: obscure the entered secret word
- *
- * ***************************************************************/
-/*void ClearScreen () {
-   char randChar;
-    for ( int i = 0 ; i < CLEAR_SCREEN_CHAR_NUM ; i++ ) {
-    randChar = swansonUtil::GetRandomInRange( 'A' , 'Z' );
-    cout << randChar;
-    }
+/*string PlayerOnePickWordFromDict (){
+   string secretString;
+   secretString = swansonInput::GetOneWord( ENTER_WORD_STR );
 
-    cout << endl << endl;
-
-   //system( "clear && printf '\e[3J'" );
-
+   while ( secretString.size() > MAX_WORD_LENGTH ) {
+      cout << endl << TOO_LONG;
+      secretString = swansonInput::GetOneWord( ENTER_WORD_STR );
+   }
 }*/
 
 /**************************************************************

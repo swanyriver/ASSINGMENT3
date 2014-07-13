@@ -11,6 +11,7 @@
 
 #include <string>
 #include <list>
+#include <cctype>
 #include "myFunctions.hpp"
 
 using namespace std;
@@ -23,11 +24,7 @@ using namespace std;
  *    exit: true if char is [a-z] or [A-Z]
  ******************************************************************************/
 bool swansonString::IsALetter ( char character ) {
-   if ( (character >= 'a' && character <= 'z')
-         || (character >= 'A' && character <= 'Z') )
-      return true;
-   else
-      return false;
+   return isalpha(character);
 }
 
 /******************************************************************************
@@ -38,10 +35,7 @@ bool swansonString::IsALetter ( char character ) {
  *    exit: true if char is [0-9]
  ******************************************************************************/
 bool swansonString::IsANumber ( char character ) {
-   if ( character >= '0' && character <= '9' )
-      return true;
-   else
-      return false;
+   return isdigit(character);
 }
 
 /******************************************************************************

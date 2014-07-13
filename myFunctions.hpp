@@ -89,7 +89,7 @@ using namespace std;
 
 class swansonString {
 public:
-   //TODO deprecate in favor of methods in cctype
+
    static bool IsALetter ( char character );
    static bool IsANumber ( char character );
    static bool AllNumbers ( string numberString );
@@ -97,7 +97,7 @@ public:
    static bool AllLetters ( string letterString );
    static bool AllLetters ( string letterString , char permitedChars[] ,
          int arraySize );
-   //TODO deprecate and use stringstream
+
    static void SeperateWords ( string myString , list<string>& seperateWords );
    static string LowerCase ( string caseString );
    static string UpperCase ( string caseString );
