@@ -62,10 +62,13 @@ inline int at ( char inCh ) {
    return inCh - 'a';
 }
 
+//constant control variables
 const int MAX_WORD_LENGTH = 12;
-
 const int LENGTH_OF_ALPHABET = 26;
+
+//command line arguments
 const string SIMPLE = "-s";
+const string NO_DICT = "-nodict";
 
 string SecretWord;
 int maxGuesses;
@@ -75,21 +78,27 @@ int numGuessesMade;
 
 int main (int argc , char* argv[]) {
 
-   //check for simple mode
+   //check for simple mode  and dictionary mode
    bool simple = false;
+   bool dictON = true;
+
    for(int i=0;i<argc;i++){
       if(strcmp(SIMPLE.c_str(),argv[i])==0) simple = true;
+      if(strcmp(NO_DICT.c_str(),argv[i])==0) dictON = false;
    }
    if(simple) ClearScreen = HackClearScreen; //run simple
    else ClearScreen=swansonUtil::ClearScreen; //call system clear
    ///finished with command line arguments////////////////////////
 
-   bool dictON = true;
 
+   Dictionary myDictonary(false);
 
-   Dictionary myDictonary(MAX_WORD_LENGTH);
-   if(!myDictonary.succesfull || myDictonary.NumWords()==0)
-      dictON=false;
+   //inflate dictionary
+   if (dictON) {
+      myDictonary = Dictionary(MAX_WORD_LENGTH);
+      if(!myDictonary.succesfull || myDictonary.NumWords()==0)
+         dictON=false;
+   }
 
 
    string message;
@@ -201,6 +210,16 @@ string PlayerOnePickWord () {
    return secretString;
 }
 
+/**************************************************************
+ *
+ * * Entry: An inflated dictionary object
+ *
+ * * Exit: An all alpha no spaces string, that is a word
+ *
+ * * Purpose: get a secret word from player and check its existence
+ * in a dictionary
+ *
+ * ***************************************************************/
 string PlayerOnePickWordFromDict (Dictionary myDictionary){
    string secretString;
    bool Error;
@@ -210,6 +229,7 @@ string PlayerOnePickWordFromDict (Dictionary myDictionary){
       if(Error) cout << endl << message << endl;
       Error = false;
       secretString = swansonInput::GetString(ENTER_WORD_STR);
+      secretString = swansonString::LowerCase(secretString);
 
       if(secretString.size()>MAX_WORD_LENGTH){
          Error = true;
@@ -222,8 +242,6 @@ string PlayerOnePickWordFromDict (Dictionary myDictionary){
    }while(Error);
 
    return secretString;
-
-
 }
 
 /**************************************************************

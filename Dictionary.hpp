@@ -50,6 +50,9 @@ public:
    static const int UNRESTRICTED = -1;
 
 
+   Dictionary(bool dummy){
+      succesfull=false;  //used to instantiate an empty dictionary
+   }
    Dictionary ( int maxWordLenght = UNRESTRICTED, string filename = "dictionary.txt"){
       succesfull = InflateDict(filename,maxWordLenght);
    }
