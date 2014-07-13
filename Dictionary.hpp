@@ -26,7 +26,7 @@ private:
       long int mapValue = 0;
 
       //open dictionary file
-      instream.open( filename );
+      instream.open( filename.c_str() );
 
       if ( instream.fail() ) {
          return false;
