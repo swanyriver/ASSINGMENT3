@@ -68,7 +68,7 @@ public:
       return wordMap.size();
    }
 
-   void TestDictionary(){
+   /*void TestDictionary(){
     long int size = wordMap.size();
     cout << endl << endl << size << " words" << endl;
 
@@ -79,7 +79,7 @@ public:
 
     }
     getchar();
-    }
+    }*/
 
 };
 

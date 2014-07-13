@@ -18,6 +18,7 @@ using std::string;
 #define STILL_WRONG "That letter is not in the word, keep trying"
 #define GOOD_JOB "Good Job that letter was in the Secret Word"
 #define TOO_LONG "The secret word cannot be that long"
+#define NOT_IN_DICT "That was not a word, I searched the whole dictionary for it"
 #define YOU_WIN "CONGRADULATIONS YOU WIN!!!!"
 #define YOU_LOSE "You ran out of guesses without guessing the Secret Word"
 

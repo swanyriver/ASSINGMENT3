@@ -36,7 +36,7 @@ void InitializeVars ();
 
 //get a word from player one
 string PlayerOnePickWord ();
-string PlayerOnePickWordFromDict ();
+string PlayerOnePickWordFromDict (Dictionary myDictionary);
 
 //get a guess letter or word from player two
 Guess PlayerTwoGuess ();
@@ -87,17 +87,10 @@ int main (int argc , char* argv[]) {
    bool dictON = true;
 
 
-   Dictionary myDictonary;
+   Dictionary myDictonary(MAX_WORD_LENGTH);
    if(!myDictonary.succesfull || myDictonary.NumWords()==0)
       dictON=false;
-   myDictonary.TestDictionary();
 
-   Dictionary shortDict(6);
-   shortDict.TestDictionary();
-
-   Dictionary failDict(Dictionary::UNRESTRICTED,"hello.txt");
-   cout << "this one success:" << failDict.succesfull;
-   getchar();
 
    string message;
    Guess nextGuess;
@@ -110,6 +103,8 @@ int main (int argc , char* argv[]) {
 
    do { //restart game
       ClearScreen();
+      if(dictON) SecretWord = PlayerOnePickWordFromDict(myDictonary);
+      else SecretWord = PlayerOnePickWord();
       InitializeVars();
       message = "";
 
@@ -166,9 +161,7 @@ int main (int argc , char* argv[]) {
  * ***************************************************************/
 
 void InitializeVars () {
-   SecretWord = PlayerOnePickWord();
-
-   maxGuesses = swansonInput::GetInt( MAX_GUESSES_STR , 1 ,
+      maxGuesses = swansonInput::GetInt( MAX_GUESSES_STR , 1 ,
          LENGTH_OF_ALPHABET );
 
    numGuessesMade = 0;
@@ -208,15 +201,30 @@ string PlayerOnePickWord () {
    return secretString;
 }
 
-/*string PlayerOnePickWordFromDict (){
+string PlayerOnePickWordFromDict (Dictionary myDictionary){
    string secretString;
-   secretString = swansonInput::GetOneWord( ENTER_WORD_STR );
+   bool Error;
+   string message;
 
-   while ( secretString.size() > MAX_WORD_LENGTH ) {
-      cout << endl << TOO_LONG;
-      secretString = swansonInput::GetOneWord( ENTER_WORD_STR );
-   }
-}*/
+   do{
+      if(Error) cout << endl << message << endl;
+      Error = false;
+      secretString = swansonInput::GetString(ENTER_WORD_STR);
+
+      if(secretString.size()>MAX_WORD_LENGTH){
+         Error = true;
+         message = TOO_LONG;
+      }else if(!myDictionary.IsAWord(secretString)){
+         Error = true;
+         message = NOT_IN_DICT;
+      }
+
+   }while(Error);
+
+   return secretString;
+
+
+}
 
 /**************************************************************
  *

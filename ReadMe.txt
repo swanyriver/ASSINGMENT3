@@ -10,5 +10,10 @@ simply run the program with the -s argument
 to see exercise components run
 "make -f exerciseMakeFile"
 
+
+
+Dictionary file proveded by oracle
+http://docs.oracle.com/javase/tutorial/collections/interfaces/examples/dictionary.txt
+
 compile and enjoy
 Brandon Swanson
