@@ -43,7 +43,6 @@ Guess PlayerTwoGuess ();
 void ProcessGuess ( Guess &nextGuess );
 
 //output correct letters to player
-void Display ();
 void Display ( string message , bool gameLost = false );
 
 //check if word has been guessed
@@ -324,9 +323,6 @@ bool PlayerHasWon () {
  * Purpose: inform player 2 of his status in the game
  *
  * ***************************************************************/
-void Display () {
-   Display( "" );
-}
 void Display ( string message , bool gameLost ) {
 
    const int WIDTH_DISPLAY = 75;
