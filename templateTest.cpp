@@ -8,17 +8,14 @@ using namespace std;
 template <typename Type>
 void show(Type element, Type set[], int numElements){
    cout << endl << "in the set:";
-   Type sorted[numElements];
    for(int i=0; i<numElements; i++){
       cout << set[i] << ",";
-      swansonUtil::InsertElement(set[i],sorted,numElements);
+      //swansonUtil::InsertElement(set[i],sorted,numElements);
    }
    cout << "the element " << element
        << ((swansonUtil::Contains(element,set,numElements))? " exists" : " does not exist");
 
-   cout << endl << "sorted this array is: ";
-   for(int i=0; i<numElements; i++) cout << sorted[i] << ",";
-   cout << endl;
+
 
 }
 
@@ -31,13 +28,36 @@ int main(){
    string strings[] = {"hello", "goodbye", "love", "hate" }; // 4
 
    double testD = 6.678;
+   int sorted[7];
+   float sortedf[7];
+   double sortedd[7];
+   char sortedc[5];
 
    show('h', chars, 5);
-   show('d', chars, 5);
+   for(int i=0;i<5;i++) swansonUtil::InsertElement(chars[i],sortedc,i);
+   cout << endl << "sorted this array is: ";
+   for(int i=0; i<5; i++) cout << sortedc[i] << ",";
+   cout << endl;
+   //show('d', chars, 5,sortedc);
    show(ints[0],ints,7);
-   show(floats[0], floats, 7);
+   for(int i=0;i<7;i++) swansonUtil::InsertElement(ints[i],sorted,i);
+   cout << endl << "sorted this array is: ";
+   for(int i=0; i<7; i++) cout << sorted[i] << ",";
+   cout << endl;
 
-   //show(testD, doubles, 7);
+
+   show(floats[0], floats, 7);
+   for(int i=0;i<7;i++) swansonUtil::InsertElement(floats[i],sortedf,i);
+   cout << endl << "sorted this array is: ";
+   for(int i=0; i<7; i++) cout << sortedf[i] << ",";
+   cout << endl;
+
+
+   show(testD, doubles, 7);
+   for(int i=0;i<7;i++) swansonUtil::InsertElement(doubles[i],sortedd,i);
+   cout << endl << "sorted this array is: ";
+   for(int i=0; i<7; i++) cout << sortedd[i] << ",";
+   cout << endl;
 
    //show(strings[3], strings, 4);
 

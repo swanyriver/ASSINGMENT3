@@ -76,26 +76,6 @@ int swansonUtil::GetRandomInRange ( int min , int max ) {
 }
 
 /******************************************************************************
- *    purpose: to insert an element into an array preserving sorted order
- *
- *    entry: sorted array
- *
- *    exit: a sorted array with additional element val
-******************************************************************************/
-/*void swansonUtil::InsertElement ( int val , int sortArray[] , int numHolding ) {
-   int i = 0;
-   for ( ; i < numHolding ; i++ ) {
-      if ( val < sortArray[i] ) {
-         for ( int j = numHolding ; j > i ; j-- ) {
-            sortArray[j] = sortArray[j - 1];
-         }
-         break;
-      }
-   }
-   sortArray[i] = val;
-}*/
-
-/******************************************************************************
  *    purpose: produce an amount (numGeneratedValues) of numbers across a given
  *             range avoiding duplicate values
  *
