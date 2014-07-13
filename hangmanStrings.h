@@ -4,6 +4,8 @@
 #include <string>
 using std::string;
 
+#define INTRO "Welcome to the exciting game of secret word\none player will enter a word\nand the other player will have to guess it one letter at a time"
+#define READY "Are you ready to play"
 #define GOODBYE_STR "Thank you for playing"
 #define PLAY_AGAIN_STR 	"would you like to play again"
 #define ENTER_WORD_STR 	"Tell me what the secret word will be:"
