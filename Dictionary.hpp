@@ -1,9 +1,19 @@
-/*
- * Dictionary.hpp
- *
- *  Created on: Jul 13, 2014
- *      Author: Brandon
- */
+/***********************************************************
+* Author: Brandon Swanson
+* Date Created: 07-13-2014
+* Last Modification Date: 07-13-2014
+* Filename: Dictionary.hpp
+*
+* Overview: Create a searchable map of words
+*
+* Input: a file with alpha only, lower case, return character separated words
+*
+* Output: a dictionary object that can be polled for number of words contained
+* and if a single string element exists in the dictionary
+*
+***********************************************************/
+
+
 
 #ifndef DICTIONARY_HPP_
 #define DICTIONARY_HPP_
@@ -19,6 +29,18 @@ private:
 
    map<string, long int> wordMap;
 
+   /**************************************************************
+    *
+    * * Entry: a file with only alpha, lower case, return character separated
+    *          words
+    *
+    * * Exit: an inflated map
+    *
+    *
+    * * Purpose:  read all words from a file,
+    *             excluding ones greater than max length
+    *
+    * ***************************************************************/
    bool InflateDict(string filename, int MaxWordLength){
       //open dict file
       fstream instream;
@@ -50,6 +72,7 @@ public:
    static const int UNRESTRICTED = -1;
 
 
+   ///constructors
    Dictionary(bool dummy){
       succesfull=false;  //used to instantiate an empty dictionary
    }
@@ -57,9 +80,18 @@ public:
       succesfull = InflateDict(filename,maxWordLenght);
    }
 
-
-
-
+   /**************************************************************
+    *
+    * * Entry:an inflated map
+    *
+    *
+    * * Exit:true if map contains 1 or more of element, false otherwise
+    *
+    *
+    * * Purpose: determine if passed in word is a word in dictionary
+    *
+    *
+    * ***************************************************************/
    bool IsAWord ( string word ) {
       if ( wordMap.count( word ) > 0 )
          return true;
@@ -67,22 +99,10 @@ public:
          return false;
    }
 
+   //returns number of words
    long int NumWords () {
       return wordMap.size();
    }
-
-   /*void TestDictionary(){
-    long int size = wordMap.size();
-    cout << endl << endl << size << " words" << endl;
-
-    string test[] = {"hello","goodbye","toodaloo", "6454klj", "thank you", "japan", "frost"};
-
-    for(int i=0; i<7; i++){
-    cout << test[i] << (IsAWord(test[i])? " is a word": " isn't a word" ) << endl;
-
-    }
-    getchar();
-    }*/
 
 };
 
